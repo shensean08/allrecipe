@@ -1,5 +1,6 @@
 package edu.kgu.sql;
 
+import java.io.InputStream;
 import java.sql.*;
 
 import edu.kgu.log.LogLogger;
@@ -12,7 +13,8 @@ public class DBConnect {
 	
 	private Connection _conn = null;
     private Statement _stat = null;
-
+    private PreparedStatement pstmt = null;
+    
     public DBConnect(String driver,  String url,
     		         String userName,String passWord) {
     	this._driver = driver;
@@ -63,7 +65,44 @@ public class DBConnect {
 		return rtnRs;
     }
     
-    public void beginTransaction() {
+    public void PrepareExecute(String sql) {
+    	try {
+			pstmt = this._conn.prepareStatement(sql);
+		} catch (SQLException e) {
+			LogLogger.error(e);
+		}
+    }
+    
+    public void setExecuteParam(int index,InputStream value) {
+    	try {
+			this.pstmt.setBinaryStream(index, value, value.available());
+		} catch (Exception e) {
+			LogLogger.error(e);
+		}
+    }
+    
+    public void setExecuteParam(int index,String value) {
+    	try {
+			this.pstmt.setString(index, value);
+		} catch (SQLException e) {
+			LogLogger.error(e);
+		}
+    }
+    
+    public boolean ExecuteUpdate() {
+    	boolean rtn = false;
+    	
+    	try {
+			this.pstmt.executeUpdate();
+			
+			rtn = true;
+		} catch (SQLException e) {
+			LogLogger.error(e);
+		}
+    	return rtn;
+    }
+    
+    public void BeginTransaction() {
     	try {
 			this._conn.setAutoCommit(false);
 		} catch (SQLException e) {

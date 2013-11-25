@@ -11,7 +11,7 @@ public class IngredientInfoAccess extends BaseAccess {
 		boolean rtn = false;
 		
 		dbConn = conn.getDBConnect();
-		dbConn.beginTransaction();
+		dbConn.BeginTransaction();
 		
 		StringBuffer query = new StringBuffer();
 		query.append(" INSERT INTO ingredientInfo ");

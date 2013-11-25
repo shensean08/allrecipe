@@ -36,7 +36,7 @@ public class recipeMasterAccess extends BaseAccess {
 		boolean rtn = false;
 		
 		dbConn = conn.getDBConnect();
-		dbConn.beginTransaction();
+		dbConn.BeginTransaction();
 		
 		StringBuffer query = new StringBuffer();
 		query.append(" INSERT INTO recipeMaster ");
@@ -64,7 +64,7 @@ public class recipeMasterAccess extends BaseAccess {
 	
 	public void udpateRecipeMaster(String recipeName) {
 		dbConn = conn.getDBConnect();
-		dbConn.beginTransaction();
+		dbConn.BeginTransaction();
 		
 		StringBuffer query = new StringBuffer();
 		query.append(" UPDATE recipeMaster ");
@@ -90,7 +90,8 @@ public class recipeMasterAccess extends BaseAccess {
 		query.append(" SELECT recipeName ");
 		query.append("       ,link ");
 		query.append("       ,country ");
-		query.append("   FROM recipeMaster where country = 'Chinese' ");
+		query.append("   FROM recipeMaster ");
+		query.append(" ORDER BY country ");
 
 		try {
 			result = dbConn.ExecuteQuery(query.toString());		   
